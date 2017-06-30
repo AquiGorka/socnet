@@ -3,18 +3,18 @@ const yo = require('yo-yo')
 // state
 const state = {
     version: '0.0.1',
-    count: 0,
+    count: 1,
 }
 
 // components
-const Version = ({ version }) => yo`<div>${version}</div>`
-const component = ({ state, update }) => {
+const Version = ({ version }) => yo`<div>Version: ${version}</div>`
+const Component = ({ state, update }) => {
     const onclick = () => {
         state.count ++
         update()
     }
     const { count } = state
-    return yo`<div onclick=${onclick}>section ${count}</div>`
+    return yo`<div onclick=${onclick}>Count (click on me to increment): ${count}</div>`
 }
 const nav = () => yo`<ul>
         <li>
@@ -30,7 +30,7 @@ const App = ({ state, update }) => {
     const { version } = state
     return yo`<div>
         ${nav()}
-        ${component({ state, update })}
+        ${Component({ state, update })}
         ${Version({ version })}
     </div>`
 }
