@@ -1,6 +1,6 @@
 const yo = require('yo-yo')
 
-// state
+// state store
 const state = {
     version: '0.0.1',
     count: 1,
@@ -17,12 +17,8 @@ const Component = ({ state, update }) => {
     return yo`<div onclick=${onclick}>Count (click on me to increment): ${count}</div>`
 }
 const nav = () => yo`<ul>
-        <li>
-            1
-        </li>
-        <li>
-            2
-        </li>
+        <li>1</li>
+        <li>2</li>
     </ul>`
 
 // app.js
