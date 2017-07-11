@@ -6,7 +6,7 @@
 
 ```sh
 npm i
-node_modules/budo/bin/cmd.js src/index.js --live
+node_modules/budo/bin/cmd.js src/index.js:js/bundle.js --dir src --live -- -t babelify
 ```
 
 

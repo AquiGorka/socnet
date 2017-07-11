@@ -1,4 +1,4 @@
-const yo = require('yo-yo')
+import yo from 'yo-yo'
 
 // state store
 const state = {
@@ -19,6 +19,7 @@ const Component = ({ state, update }) => {
 const nav = () => yo`<ul>
         <li>1</li>
         <li>2</li>
+        <li>3</li>
     </ul>`
 
 // app.js
