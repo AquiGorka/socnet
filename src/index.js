@@ -18,28 +18,21 @@ const Counter = ({ state, update }) => {
   return yo`<div onclick=${onclick}>Count (click on me to increment): ${count}</div>`
 }
 const Nav = () => yo`<ul>
-  <li>1</li>
-  <li>2</li>
-  <li>3</li>
+  <li><a href="#/">Home</a></li>
+  <li><a href="#/section">Section</a></li>
+  <li>
+    <ul>
+      <li><a href="#/inner/slug-1">Slug 1</a></li>
+      <li><a href="#/inner/slug-2">Slug 2</a></li>
+    </ul>
+  </li>
 </ul>`
 
-// containers / sectiions
+// containers / sections
 const Home = () => yo`<div>Home</div>`
 const Section = () => yo`<div>Section</div>`
 const Inner = ({ params }) => yo`<div>Inner ${JSON.stringify(params)}</div>`
 let Outlet = () => yo`<div>Loading</div>`
-
-// app.js
-const App = ({ state, update }) => {
-  const { version, count } = state
-  return yo`<div>
-    ${Nav()}
-    ${Counter({ state, update })}
-    ${Version({ version })}
-    <div>Count: ${count}</div>
-    ${Outlet()}
-  </div>`
-}
 
 // router
 const router = routes({
@@ -56,10 +49,17 @@ const router = routes({
   }
 }, { location: 'hash' })
 
-// index.js
-const root = document.body.appendChild(document.createElement('div'))
-const update = () => yo.update(root, App({ state, update }))
-update()
+// app.js
+const App = ({ state, update }) => {
+  const { version, count } = state
+  return yo`<div>
+    ${Nav()}
+    ${Counter({ state, update })}
+    ${Version({ version })}
+    <div>Count: ${count}</div>
+    ${Outlet()}
+  </div>`
+}
 
 router.on('transition', (path, Component) => {
   Outlet = Component 
@@ -68,5 +68,10 @@ router.on('transition', (path, Component) => {
 router.on('error', err => {
   console.warn('Transition error: ', err)
 })
+
+// index.js
+const root = document.body.appendChild(document.createElement('div'))
+const update = () => yo.update(root, App({ state, update }))
+//update()
 
 router.transitionTo('/')
