@@ -24,10 +24,10 @@ const Nav = () => yo`<ul>
 </ul>`
 
 // containers / sectiions
-const Home = (p) => yo`<div>Home ${JSON.stringify(p)}</div>`
+const Home = () => yo`<div>Home</div>`
 const Section = () => yo`<div>Section</div>`
-const Inner = () => yo`<div>Inner</div>`
-let Outlet = () => yo`<div class="outlet">Loading</div>`
+const Inner = ({ params }) => yo`<div>Inner ${JSON.stringify(params)}</div>`
+let Outlet = () => yo`<div>Loading</div>`
 
 // app.js
 const App = ({ state, update }) => {
@@ -43,12 +43,17 @@ const App = ({ state, update }) => {
 
 // router
 const router = routes({
-  '/1': params => Home({ params }),
   '/': function() {
     return Home
   },
-  '/section': params => Section({ params }),
-  '/inner/:slug': params => Inner({ params })
+  '/section': function() {
+    return Section
+  },
+  '/inner/:slug': function(params) {
+    return function() {
+      return Inner({ params })
+    }
+  }
 }, { location: 'hash' })
 
 // index.js
@@ -56,9 +61,12 @@ const root = document.body.appendChild(document.createElement('div'))
 const update = () => yo.update(root, App({ state, update }))
 update()
 
-router.on('transition', function (path, Component) {
+router.on('transition', (path, Component) => {
   Outlet = Component 
   update()
+})
+router.on('error', err => {
+  console.warn('Transition error: ', err)
 })
 
 router.transitionTo('/')
