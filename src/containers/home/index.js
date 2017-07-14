@@ -2,8 +2,7 @@ import yo from 'yo-yo'
 import Items from '../../components/items'
 import New from '../../components/new'
 
-const Home = ({ state, update, onAdd }) => {
-  const { items } = state
+const Home = ({ items = [], onAdd }) => {
   const { length } = items
   return yo`<div>
     <div>Home</div>

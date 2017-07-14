@@ -14,15 +14,15 @@ const log = hyperlog(db, { valueEncoding: 'json' })
 const sw = wswarm(signalhub('socnet-demo', ['https://signalhub.mafintosh.com']))
 
 sw.on('peer', function (peer, id) {
-  console.log('PEER',id)
+  console.log('PEER', id)
   peer.pipe(log.replicate()).pipe(peer)
 })
 
 log.createReadStream().pipe(to.obj(function (row, enc, next) {
-  console.log('update from swarm: ', row)
+  console.log('Update from swarm: ', row)
   const { items, ...rest } = state
   const { value } = row
-  //state = { items: items.concat([value]) }
+  state.add(value)
   update()
   next()
 }))
@@ -30,7 +30,13 @@ log.createReadStream().pipe(to.obj(function (row, enc, next) {
 
 // index.js
 const root = document.body.appendChild(document.createElement('div'))
-export const update = () => yo.update(root, App({ state, update }))
+export const update = () => yo.update(root, App({ state, onAdd: newItem => {
+  //state.add(newItem)
+  log.append(newItem, (err, node) => {
+    state.add(newItem)
+    update()
+  })
+}}))
 
 // first run
 update()
