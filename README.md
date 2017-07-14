@@ -6,7 +6,7 @@ Prototype to uses a descentralized log, synchronized via a p2p swarm.
 
 ```sh
 npm i
-node_modules/budo/bin/cmd.js src/index.js:js/bundle.js --dir src --live -- -t babelify
+npm run start
 ```
 
 Uses a _public_ signalhub server, in a future release I will add my own.
