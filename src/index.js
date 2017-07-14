@@ -1,21 +1,61 @@
 import yo from 'yo-yo'
 import routes from 'base-router'
+import level from 'level-browserify'
+const db = level('socnet.db')
+import hyperlog from 'hyperlog'
+const log = hyperlog(db, { valueEncoding: 'json' })
+import to from 'flush-write-stream'
+import wswarm from 'webrtc-swarm'
+import signalhub from 'signalhub'
+//const sw = wswarm(signalhub('socnet-demo', ['http://localhost:9005/']))
+const sw = wswarm(signalhub('socnet-demo', ['https://signalhub.mafintosh.com']))
+
+sw.on('peer', function (peer, id) {
+  console.log('PEER',id)
+  peer.pipe(log.replicate()).pipe(peer)
+})
+
+log.createReadStream().pipe(to.obj(function (row, enc, next) {
+  console.log('update from swarm: ', row)
+  const { items, ...rest } = state
+  const { value } = row
+  state = { items: items.concat([value]) }
+  update()
+  next()
+}))
 
 // state store
-const state = {
-  version: '0.0.1',
-  count: 1,
+let state = {
+  version: '0.0.2',
+  items: [],
 }
 
 // components
+const Item = ({ item }) => yo`<li>${JSON.stringify(item)}</li>`
+const Items = ({ items }) => yo`<ul>${items.sort((a, b) => a.t - b.t).map(item => Item({ item }))}`
 const Version = ({ version }) => yo`<div>Version: ${version}</div>`
-const Counter = ({ state, update }) => {
+const New = ({ state, update }) => {
   const onclick = () => {
-    state.count++
-    update()
+    const { items, ...rest } = state
+    const newItem = { r: Math.random(), t: Date.now() }
+    log.append({ item: newItem }, function (err, node) {
+      if (err) return console.error(err)
+      //console.log('log appended: ', node, node.value)
+      // node.value.item === newItem  <- true
+      const newItems = items.concat(newItem)
+      console.log('newItems: ', newItems)
+      state = { items: newItems, ...rest }
+      console.log('new state: ', state)
+        state.items.push(newItem)
+      update()
+    })
   }
-  const { count } = state
-  return yo`<div onclick=${onclick}>Count (click on me to increment): ${count}</div>`
+  const { items } = state
+  const { length } = items
+  return yo`<div>
+    <div onclick=${onclick}>Add new</div>
+    <div>Current length: ${length}</div>
+  </div>`
 }
 const Nav = () => yo`<ul>
   <li><a href="#/">Home</a></li>
@@ -29,7 +69,10 @@ const Nav = () => yo`<ul>
 </ul>`
 
 // containers / sections
-const Home = () => yo`<div>Home</div>`
+const Home = () => {
+  const { items } = state
+  return yo`<div><div>Home</div><div>Items:</div><div>${Items({ items })}</div></div>`
+}
 const Section = () => yo`<div>Section</div>`
 const Inner = ({ params }) => yo`<div>Inner ${JSON.stringify(params)}</div>`
 let Outlet = () => yo`<div>Loading</div>`
@@ -51,12 +94,12 @@ const router = routes({
 
 // app.js
 const App = ({ state, update }) => {
-  const { version, count } = state
+  console.log('App render. state: ', state)
+  const { version } = state
   return yo`<div>
     ${Nav()}
-    ${Counter({ state, update })}
     ${Version({ version })}
-    <div>Count: ${count}</div>
+    ${New({ state, update })}
     ${Outlet()}
   </div>`
 }

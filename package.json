@@ -16,6 +16,9 @@
     "base-router": "^1.2.0",
     "browserify": "^14.4.0",
     "budo": "^10.0.3",
+    "level-browserify": "^1.1.1",
+    "signalhub": "^4.8.0",
+    "webrtc-swarm": "^2.8.0",
     "yo-yo": "^1.4.1"
   }
 }
