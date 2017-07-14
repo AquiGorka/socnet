@@ -1,5 +1,7 @@
 import yo from 'yo-yo'
 
-const Section = () => yo`<div>Section</div>`
+const Section = () => yo`<div>
+  <div>Section</div>
+</div>`
 
 export default Section

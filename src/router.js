@@ -5,7 +5,6 @@ import Inner from './containers/inner'
 import { Outlet } from './app'
 import { update } from './index'
 
-// router
 const router = routes({
   '/': function() {
     return Home
@@ -20,11 +19,11 @@ const router = routes({
   }
 }, { location: 'hash' })
 
-
 router.on('transition', (path, Component) => {
-  Outlet(Component)
+  Outlet(Component())
   update()
 })
+
 router.on('error', (name, err) => {
   console.warn('Transition error: ', name, err)
 })
