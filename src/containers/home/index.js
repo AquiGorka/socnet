@@ -1,6 +1,7 @@
 import yo from 'yo-yo'
 import state from '../../state'
 import { update } from '../../index'
+import { Outlet } from '../../app'
 import Items from '../../components/items'
 import New from '../../components/new'
 

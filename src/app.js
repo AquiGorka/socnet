@@ -5,17 +5,16 @@ import Version from './components/version'
 const Loading = () => yo`<div>Loading</div>`
 
 export const Outlet = (() => {
-  let node = Loading()
-  return n => {
-    if (n) {
-      node = n
+  let n = Loading()
+  return node => {
+    if (node) {
+      n = node
     }
-    return node
+    return n
   }
 })()
 
 const App = ({ state, update }) => {
-  console.log('App render. state: ', state)
   const { version } = state
   return yo`<div>
     ${Nav()}

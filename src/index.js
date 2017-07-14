@@ -28,10 +28,15 @@ log.createReadStream().pipe(to.obj(function (row, enc, next) {
   next()
 }))
 
+import { Outlet } from './app'
+
 // index.js
 const root = document.body.appendChild(document.createElement('div'))
-export const update = () => yo.update(root, App({ state, update }))
+export const update = () => {
+  yo.update(root, App({ state, update }))
+}
 
 // first run
-update()
+//update()
+
 router.transitionTo('/')

@@ -19,8 +19,8 @@ const router = routes({
   }
 }, { location: 'hash' })
 
-router.on('transition', (path, Component) => {
-  Outlet(Component())
+router.on('transition', (path, node) => {
+  Outlet(node())
   update()
 })
 
