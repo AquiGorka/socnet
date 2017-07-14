@@ -1,6 +1,4 @@
-# Secure Scuttlebutt Prototype
-
-
+# Hyperlog + yo-yo Prototype
 
 ## Dev
 
