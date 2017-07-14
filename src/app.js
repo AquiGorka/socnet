@@ -1,18 +1,16 @@
 import yo from 'yo-yo'
-import state from './state'
-import { update } from './index'
 import Nav from './components/nav'
 import Version from './components/version'
 
 const Loading = () => yo`<div>Loading</div>`
 
 export const Outlet = (() => {
-  let _node = Loading()
+  let node = Loading()
   return n => {
     if (n) {
-      _node = n
+      node = n
     }
-    return _node
+    return node
   }
 })()
 
