@@ -6,7 +6,6 @@ import wswarm from 'webrtc-swarm'
 import signalhub from 'signalhub'
 
 import App from './app'
-import router from './router'
 import state from './state'
 
 const db = level('socnet.db')
@@ -28,15 +27,10 @@ log.createReadStream().pipe(to.obj(function (row, enc, next) {
   next()
 }))
 
-import { Outlet } from './app'
 
 // index.js
 const root = document.body.appendChild(document.createElement('div'))
-export const update = () => {
-  yo.update(root, App({ state, update }))
-}
+export const update = () => yo.update(root, App({ state, update }))
 
 // first run
-//update()
-
-router.transitionTo('/')
+update()

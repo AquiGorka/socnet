@@ -1,7 +1,7 @@
 const _items = []
 
 let state = {
-  version: '0.0.4',
+  version: '0.0.5',
   // items
   add: function(item) { _items.push(item) },
   get items() { return _items },
