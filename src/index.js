@@ -34,4 +34,4 @@ export const update = () => yo.update(root, App({ state, update }))
 
 // frist run
 update()
-//router.transitionTo('/')
+router.transitionTo('/')

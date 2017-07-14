@@ -2,6 +2,8 @@ import routes from 'base-router'
 import Home from './containers/home'
 import Section from './containers/section'
 import Inner from './containers/inner'
+import { Outlet } from './app'
+import { update } from './index'
 
 // router
 const router = routes({
@@ -20,11 +22,11 @@ const router = routes({
 
 
 router.on('transition', (path, Component) => {
-  Outlet = Component 
+  Outlet(Component)
   update()
 })
-router.on('error', err => {
-  console.warn('Transition error: ', err)
+router.on('error', (name, err) => {
+  console.warn('Transition error: ', name, err)
 })
 
 export default router

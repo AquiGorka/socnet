@@ -5,7 +5,18 @@ import Nav from './components/nav'
 import Version from './components/version'
 import New from './components/new'
 
-export let Outlet = () => yo`<div>Loading</div>`
+const Loading = () => yo`<div>Loading</div>`
+
+export const Outlet = (() => {
+  let _node = Loading()
+  return n => {
+    if (n) {
+      _node = n()
+    }
+    return _node
+  }
+})()
+
 
 // app.js
 const App = ({ state, update }) => {
