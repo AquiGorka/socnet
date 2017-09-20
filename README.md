@@ -1,6 +1,6 @@
 # Hyperlog + yo-yo Prototype
 
-Prototype to uses a descentralized log, synchronized via a p2p swarm.
+Prototype that showcases a descentralized log, synchronized via a p2p swarm.
 
 ## Dev
 
